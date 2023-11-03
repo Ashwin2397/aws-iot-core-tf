@@ -1,5 +1,9 @@
 class StatisticsController < ApplicationController
-  # This controller will do the following:
+  def index
+    render json: { message: 'Hello World!' }, status: :ok
+  end
+  
+  # This route will do the following:
   # - Receive MM Data
   # - Perform benchmark testing
   # - Calculate relevant statistics

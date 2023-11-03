@@ -1,0 +1,2 @@
+run:
+	rails server
