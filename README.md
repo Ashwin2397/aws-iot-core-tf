@@ -5,6 +5,20 @@ The goals of this project is as follows:
 - Understand how AWS IoT Core handles MM streaming
 - Gain a deeper understanding of Terraform
 
+# Setup
+
+- [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+- Create a `.env` and Add the following
+  ```bash
+  AWS_ACCESS_KEY_ID=AKIAZLZUWSRC5RPVJJNC
+  AWS_SECRET_ACCESS_KEY=rC1opcrrJEDGFyxGgH1ABspT14UZlg4Cohb1LOTD
+  ```
+- Replace `tf/s3.tf#3` with your own bucket name
+- Initialize Terraform
+  ```bash
+  terraform init
+  ```
+
 # Deploy
 
 ```bash
@@ -30,14 +44,15 @@ aws iot-data publish \
 ## List Object Keys
 
 ```bash
-aws s3api list-objects --bucket iot-core-test-bucket-ashwin-selva | jq -r '.Contents[].Key'
+bucket=<your-bucket-name>
+aws s3api list-objects --bucket $bucket | jq -r '.Contents[].Key'
 ```
 Identify the latest object based on the key name.
 
 ## Retrieve message (object) from bucket
 
 ```bash
-aws s3api get-object --bucket iot-core-test-bucket-ashwin-selva --key <key-from-previous-step> example.png
+aws s3api get-object --bucket $bucket --key <key-from-previous-step> example.png
 ```
 
 ## Teardown
@@ -45,7 +60,7 @@ aws s3api get-object --bucket iot-core-test-bucket-ashwin-selva --key <key-from-
 ### Empty Bucket
 
 ```bash
-aws s3api delete-object --bucket iot-core-test-bucket-ashwin-selva --key <key-to-delete>
+aws s3api delete-object --bucket $bucket --key <key-to-delete>
 ```
 
 ### Destroy resources
