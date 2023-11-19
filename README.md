@@ -10,8 +10,8 @@ The goals of this project is as follows:
 - [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 - Create a `.env` and Add the following
   ```bash
-  AWS_ACCESS_KEY_ID=AKIAZLZUWSRC5RPVJJNC
-  AWS_SECRET_ACCESS_KEY=rC1opcrrJEDGFyxGgH1ABspT14UZlg4Cohb1LOTD
+  AWS_ACCESS_KEY_ID=<access-key-id>
+  AWS_SECRET_ACCESS_KEY=<secret-access-key>
   ```
 - Replace `tf/s3.tf#3` with your own bucket name
 - Initialize Terraform
