@@ -8,7 +8,8 @@ The goals of this project is as follows:
 # Setup
 
 - [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
-- Create a `.env` and Add the following
+- Sign up for AWS, navigate to _Security Credentials_ and create an access key
+- Create a `.env` and add the following
   ```bash
   AWS_ACCESS_KEY_ID=<access-key-id>
   AWS_SECRET_ACCESS_KEY=<secret-access-key>
