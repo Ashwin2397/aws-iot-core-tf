@@ -6,6 +6,20 @@ resource "aws_iot_certificate" "iot_certificate" {
   active = true
 }
 
+# TODO: Change to SecureString encrypted with KMS key
+resource "aws_ssm_parameter" "certificate_pem" {
+  name  = "certificate-pem"
+  type  = "String"
+  value = aws_iot_certificate.iot_certificate.certificate_pem
+}
+
+# TODO: Change to SecureString encrypted with KMS key
+resource "aws_ssm_parameter" "private_key" {
+  name  = "private-key"
+  type  = "String"
+  value = aws_iot_certificate.iot_certificate.private_key
+}
+
 resource "aws_iot_thing_principal_attachment" "iot_attachment" {
   principal = aws_iot_certificate.iot_certificate.arn
   thing     = aws_iot_thing.iot_core.name
