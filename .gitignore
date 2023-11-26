@@ -31,3 +31,6 @@
 
 # Ignore .env files
 .env
+
+# Ignore Rubymine IDE config files
+.idea
