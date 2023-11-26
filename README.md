@@ -32,6 +32,12 @@ terraform apply --auto-approve
 
 Reference [deploy](#deploy)
 
+## Run subscriber script
+
+```bash
+ruby client.rb
+```
+
 ## Publish messsage
 
 ```bash
