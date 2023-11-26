@@ -25,3 +25,9 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem "mqtt", "~> 0.6.0"
+
+gem "aws-sdk-ssm", "~> 1.161"
+
+gem "dotenv", "~> 2.8"
