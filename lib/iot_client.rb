@@ -5,20 +5,21 @@ require 'mqtt'
 require_relative './ssm_retriever'
 
 class IoTClient
-  attr_reader :identifier
+  attr_reader :client_id
 
-  def initialize(identifier: SecureRandom.uuid)
-    @identifier = identifier
+  def initialize(log_id: '', client_id: SecureRandom.uuid)
+    @log_id = log_id
+    @client_id = client_id
   end
 
   def subscribe(topic)
     connect
-    puts "IoT Client #{identifier} subscribed to: #{topic}"
+    puts "IoT Client #{client_id} subscribed to: #{topic}"
 
     client.get(topic) do |_, message|
       log('receive')
-      puts "Message received by #{identifier}!"
-      File.write("./output/#{SecureRandom.uuid}_output.jpg", message)
+      puts "Message received by #{client_id}!"
+      File.write("./output/images/#{SecureRandom.uuid}_output.jpg", message)
     end
   end
 
@@ -30,7 +31,7 @@ class IoTClient
     connect
     log('publish')
     client.publish(topic, message)
-    puts "Message published by #{identifier}!"
+    puts "Message published by #{client_id}!"
   end
 
   private
@@ -47,10 +48,10 @@ class IoTClient
 
   def connect
     client.connect
-    puts "IoT Client #{identifier} connected!"
+    puts "IoT Client #{client_id} connected!"
   end
 
   def log(action)
-    File.write('output.log', "#{action},#{identifier},#{Time.now}\n", mode: 'a')
+    File.write("./output/logs/output_#{@log_id}.log", "#{action},#{client_id},#{Time.now}\n", mode: 'a')
   end
 end

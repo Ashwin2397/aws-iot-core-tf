@@ -3,5 +3,5 @@ terraform-format:
 	terraform validate
 
 clear:
-	rm ./output/*
+	rm ./output/*/*
 	true > output.log
