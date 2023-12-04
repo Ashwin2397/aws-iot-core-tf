@@ -44,7 +44,7 @@ ruby client.rb
 aws iot-data publish \
   --topic "iot-core-topic" \
   --cli-binary-format raw-in-base64-out \
-  --payload fileb://test/fixtures/example.png \
+  --payload fileb://example.png \
   --region "us-east-1"
 ```
 
