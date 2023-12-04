@@ -19,6 +19,7 @@ The goals of this project is as follows:
   ```bash
   terraform init
   ```
+- `make setup`
 
 # Deploy
 
@@ -28,25 +29,72 @@ terraform apply --auto-approve
 
 # Test
 
-## Setup
+## 1. Setup
 
 Reference [deploy](#deploy)
 
-## Run subscriber script
+## 2. Run subscriber script
 
 ```bash
-ruby client.rb
+ruby client.rb subscribe <subscriber-count> <log-id>
 ```
 
-## Publish messsage
+**Example:**
 
 ```bash
-aws iot-data publish \
-  --topic "iot-core-topic" \
-  --cli-binary-format raw-in-base64-out \
-  --payload fileb://example.png \
-  --region "us-east-1"
+ruby client.rb subscribe 100 100_big_2
 ```
+
+## 3. Publish messsage
+
+### Run publish script
+
+```bash
+ruby client.rb publish <file-path> <log-id>
+```
+
+**Example:**
+
+```bash
+ruby client.rb publish fixtures/big_2.jpg 100_big_2
+```
+
+**Note:** 
+- Reference the files in `/fixtures`
+- Ensure that the `log_id` used here is the same as the `log_id` used in the step 2
+
+## 4. Run statistics script
+
+```bash
+ ruby statistics_calculator.rb <log-id>
+```
+
+**Example:**
+
+```bash
+ruby statistics_calculator.rb 100_big_2
+```
+
+**Note:**
+- Ensure that the `log_id` used here is the same as the `log_id` used in the step 2
+
+## 5. Teardown
+
+### Empty Bucket
+
+```bash
+aws s3api delete-object --bucket $bucket --key <key-to-delete>
+```
+
+### Destroy resources
+
+```bash
+terraform destroy --auto-approve
+```
+
+For good measure, ensure that `resources` in `terraform.tfstate` is an empty list.
+
+# Others: Interfacing w/ AWS CLI
 
 ## List Object Keys
 
@@ -62,18 +110,12 @@ Identify the latest object based on the key name.
 aws s3api get-object --bucket $bucket --key <key-from-previous-step> example.png
 ```
 
-## Teardown
-
-### Empty Bucket
+## Publish message
 
 ```bash
-aws s3api delete-object --bucket $bucket --key <key-to-delete>
+aws iot-data publish \
+  --topic "iot-core-topic" \
+  --cli-binary-format raw-in-base64-out \
+  --payload fileb://example.png \
+  --region "us-east-1"
 ```
-
-### Destroy resources
-
-```bash
-terraform destroy --auto-approve
-```
-
-For good measure, ensure that `resources` in `terraform.tfstate` is an empty list.
