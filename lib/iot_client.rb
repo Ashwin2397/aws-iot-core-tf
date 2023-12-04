@@ -18,7 +18,7 @@ class IoTClient
     client.get(topic) do |_, message|
       log('receive')
       puts "Message received by #{identifier}!"
-      File.write("./output/#{SecureRandom.uuid}_output.png", message)
+      File.write("./output/#{SecureRandom.uuid}_output.jpg", message)
     end
   end
 
@@ -28,8 +28,8 @@ class IoTClient
 
   def publish(topic, message)
     connect
-    client.publish(topic, message)
     log('publish')
+    client.publish(topic, message)
     puts "Message published by #{identifier}!"
   end
 
