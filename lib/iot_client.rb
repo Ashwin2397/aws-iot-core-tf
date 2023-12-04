@@ -16,8 +16,9 @@ class IoTClient
     puts "IoT Client #{identifier} subscribed to: #{topic}"
 
     client.get(topic) do |_, message|
+      log('receive')
+      puts "Message received by #{identifier}!"
       File.write("./output/#{SecureRandom.uuid}_output.png", message)
-      puts "Message Received by #{identifier}!"
     end
   end
 
@@ -28,6 +29,7 @@ class IoTClient
   def publish(topic, message)
     connect
     client.publish(topic, message)
+    log('publish')
     puts "Message published by #{identifier}!"
   end
 
@@ -46,5 +48,9 @@ class IoTClient
   def connect
     client.connect
     puts "IoT Client #{identifier} connected!"
+  end
+
+  def log(action)
+    File.write('output.log', "#{action},#{identifier},#{Time.now}\n", mode: 'a')
   end
 end
