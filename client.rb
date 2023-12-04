@@ -28,25 +28,43 @@ class SSMRetriever
   end
 end
 
-client = MQTT::Client.new(
-  host: ENV['IOT_AWS_ENDPOINT'],
-  ssl: true,
-  port: 8883,
-  cert: SSMRetriever.retrieve('certificate-pem'),
-  key: SSMRetriever.retrieve('private-key'),
-)
+class IoTClient
+    def subscribe(topic)
+      client.connect
+      puts 'Client connected!'
+      puts "Subscribed to #{topic}"
 
-client.connect
+      client.get(topic) do |_, message|
+        File.write("./output/#{SecureRandom.uuid}_output.png", message)
+        puts 'Message Received!'
+      end
+    end
 
-# Example Publish
-# client.publish('iot-core-topic', 'Some message')
+    def unsubscribe
+      client.disconnect
+    end
 
-# Subscribe
-client.get('iot-core-topic') do |topic, message|
-  File.write('output.png', message)
-  puts 'Message Received!'
+    def publish(topic, message)
+      client.publish(topic, message)
+    end
+
+    private
+
+    def client
+      @client ||= MQTT::Client.new(
+        host: ENV['IOT_AWS_ENDPOINT'],
+        ssl: true,
+        port: 8883,
+        cert: SSMRetriever.retrieve('certificate-pem'),
+        key: SSMRetriever.retrieve('private-key'),
+      )
+    end
 end
 
-client.disconnect
+# Subscribe
+iot_client = IoTClient.new
+iot_client.subscribe('iot-core-topic')
+
+iot_client.disconnect
 
 

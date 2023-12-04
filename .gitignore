@@ -34,3 +34,5 @@
 
 # Ignore Rubymine IDE config files
 .idea
+
+/output
