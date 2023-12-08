@@ -8,17 +8,25 @@ class StatisticsCalculator
 
   def calculate
     table = Terminal::Table.new :headings => ['Id', 'Time Elapsed'], :rows => rows
-    File.write(output_file, table.to_s + "\n\nAverage time elapsed: #{average_time_elapsed} seconds")
+    File.write(output_file, table.to_s + "\n\n#{average_time_elapsed_log}")
+
+    puts average_time_elapsed_log
+    puts "Statistics persisted to: #{file_path}"
   end
 
   private
 
-  def average_time_elapsed
-    (rows.map(&:last).sum)/rows.size
+  def average_time_elapsed_log
+    average_time_elapsed = (rows.map(&:last).sum)/rows.size
+    "Average time elapsed: #{average_time_elapsed} seconds"
+  end
+
+  def file_path
+    "./output/logs/output_#{@n_subscribers}.log"
   end
 
   def logs
-    @logs ||= File.read("./output/logs/output_#{@n_subscribers}.log").split("\n").map { |l| l.split(',') }
+    @logs ||= File.read(file_path).split("\n").map { |l| l.split(',') }
   end
 
   def output_file
